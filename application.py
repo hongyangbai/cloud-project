@@ -75,13 +75,32 @@ def profile():
 
 
 @application.route('/profile-edit')
-def profile():
+def profile_edit():
 
     return render_template('profile-edit.html')
 
 
-@application.route('/signup')
+@application.route('/signup', methods = ['GET', 'POST'])
 def signup():
+
+
+    error = None
+    if request.method == 'POST':
+        print request.form.get('user-mail')
+        print request.form.get('user-password')
+        username = request.form.get('user-mail')
+        password = request.form.get('user-password')
+        try:
+            g.conn.execute('''INSERT INTO users (username, password) VALUES (%s, %s)''', (username, password))
+            flash('Thank you for signing up!')
+            session['username'] = username
+            return redirect(url_for('home'))
+        except Exception as e:
+            error = str(e)
+    return render_template('index', error=error)
+
+
+
     return render_template('signup.html')
 
 # Main function
