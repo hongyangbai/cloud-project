@@ -44,11 +44,23 @@ def teardown_request(_):
 # Render home page
 @application.route('/')
 def index():
+
+    global page_user
+
+    if page_user == '':
+        print "here"
+
+        return redirect(url_for('signin'))
+
     return render_template('index.html', this_username = page_user)
 
 # Render home page
 @application.route('/index')
 def index_():
+
+    global page_user
+    if page_user == '':
+        return redirect(url_for('signin'))
     return render_template('index.html', this_username = page_user)
 
 
