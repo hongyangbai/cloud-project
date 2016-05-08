@@ -75,6 +75,7 @@ $(document).ready( function() {
 
   // bind both clndrs to the left and right arrow keys
   $(document).keydown( function(e) {
+
     if(e.keyCode == 37) {
       // left arrow
       calendars.clndr1.back();

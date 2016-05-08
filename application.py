@@ -15,6 +15,9 @@ socketio = SocketIO(application, async_mode='gevent')
 
 disp_process_pref = "===[Process]===: "
 
+page_user = ''
+
+
 #####################################
 #
 # For hanlding PostGreSQL
@@ -41,32 +44,66 @@ def teardown_request(_):
 # Render home page
 @application.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', this_username = page_user)
 
 # Render home page
 @application.route('/index')
 def index_():
-    return render_template('index.html')
+    return render_template('index.html', this_username = page_user)
 
 
 @application.route('/signin', methods = ['GET', 'POST'])
 def signin():
     error = None
+    global page_user
+
     if request.method == 'POST':
-        print request.form.get('user-mail')
+        print request.form.get('user-username')
         print request.form.get('user-password')
-        username = request.form.get('user-mail')
+        username = request.form.get('user-username')
         password = request.form.get('user-password')
-        #cur = g.conn.execute('''SELECT * FROM users WHERE username = %s AND password = %s''', (username, password))
-        '''user = cur.fetchone()
+        cur = g.conn.execute('''SELECT * FROM users WHERE username = %s AND password = %s''', (username, password))
+        user = cur.fetchone()
         if user is None:
-            error = 'Invalid username or password.'
+            return render_template('signin.html')
+
         else:
             session['username'] = username
-            flash('You are now logged in as <b>{}</b>.'.format(username))'''
-        return redirect(url_for('index'))
+            page_user = username
+        
+        return render_template('index.html', this_username = page_user)
 
     return render_template('signin.html')
+
+
+
+@application.route('/signup', methods = ['GET', 'POST'])
+def signup():
+
+
+    error = None
+    global page_user
+
+    if request.method == 'POST':
+        print request.form.get('user-username')
+        print request.form.get('user-password')
+        username = request.form.get('user-username')
+        password = request.form.get('user-password')
+        page_user = username
+        try:
+            g.conn.execute('''INSERT INTO users (username, password) VALUES (%s, %s)''', (username, password))
+            session['username'] = username
+        except Exception as e:
+            return render_template('signup.html')
+
+
+
+        return render_template('index.html', this_username = page_user)
+
+
+
+    return render_template('signup.html')
+
 
 @application.route('/profile')
 def profile():
@@ -79,29 +116,6 @@ def profile_edit():
 
     return render_template('profile-edit.html')
 
-
-@application.route('/signup', methods = ['GET', 'POST'])
-def signup():
-
-
-    error = None
-    if request.method == 'POST':
-        print request.form.get('user-mail')
-        print request.form.get('user-password')
-        username = request.form.get('user-mail')
-        password = request.form.get('user-password')
-        try:
-            g.conn.execute('''INSERT INTO users (username, password) VALUES (%s, %s)''', (username, password))
-            flash('Thank you for signing up!')
-            session['username'] = username
-            return redirect(url_for('home'))
-        except Exception as e:
-            error = str(e)
-    return render_template('index', error=error)
-
-
-
-    return render_template('signup.html')
 
 # Main function
 if __name__ == '__main__':

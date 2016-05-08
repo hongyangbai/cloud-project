@@ -23,16 +23,19 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 </head>
 <body>
 	<div class="login">
-		<h1><a href="index.html">METFLIX</a></h1>
+		<h1><a href="signup">METFLIX</a></h1>
 		<div class="login-bottom">
 			<h2>Register</h2>
+
+
+			<form method="post">
 			<div class="col-md-6">
 				<div class="login-mail">
-					<input type="text" placeholder="Email" required="">
-					<i class="fa fa-envelope"></i>
+					<input type="text" placeholder="Username" required="" name="user-username">
+					<i class="fa fa-user"></i>
 				</div>
 				<div class="login-mail">
-					<input type="password" placeholder="Password" required="">
+					<input type="password" placeholder="Password" required="" name="user-password">
 					<i class="fa fa-lock"></i>
 				</div>
 				<div class="login-mail">
@@ -48,12 +51,19 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 					<label class="hvr-shutter-in-horizontal login-sub">
 						<input type="submit" value="Submit">
 					</label>
-					<p>Already register</p>
+			</div>
+			</form>
+
+			<div class="col-md-6 login-do">
+
+					<p>Already in Metflix?</p>
 					<label class="hvr-shutter-in-horizontal login-sub">
-						<a href="signin.html"></a>
+						<a href="signin">
 						<input type="submit" value="login">
+						</a>
 					</label>
 			</div>
+
 			<div class="clearfix"> </div>
 		</div>
 	</div>

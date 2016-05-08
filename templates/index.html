@@ -30,10 +30,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		$(function () {
 			$('#supported').text('Supported/allowed: ' + !!screenfull.enabled);
 
-			if (!screenfull.enabled) {
-				return false;
-			}
-
 			
 
 			$('#toggle').click(function () {
@@ -44,6 +40,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			
 		});
 		</script>
+
+
 
 <!----->
 
@@ -79,10 +77,12 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
      
        
             <!-- Brand and toggle get grouped for better mobile display -->
-		 
+		 	
 		   <!-- Collect the nav links, forms, and other content for toggling -->
 		    <div class="drop-men" >
 		        <ul class=" nav_1">
+
+						
 		           
 		    		<li class="dropdown at-drop">
 		              <a href="#" class="dropdown-toggle dropdown-at " data-toggle="dropdown"><i class="fa fa-globe"></i> <span class="number">1</span></a>
@@ -104,7 +104,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		              </ul>
 		            </li>
 					<li class="dropdown">
-		              <a href="#" class="dropdown-toggle dropdown-at" data-toggle="dropdown"><span class=" name-caret">Rackham<i class="caret"></i></span><img src="../static/styles/images/wo.jpg"></a>
+						
+
+		              <a href="#" class="dropdown-toggle dropdown-at" data-toggle="dropdown"><span class="name-caret" id="username-head">{{this_username}}<i class="caret"></i></span><img src="../static/styles/images/wo.jpg"></a>
 		              <ul class="dropdown-menu " role="menu">
 		                <li><a href="profile"><i class="fa fa-user"></i>Edit Profile</a></li>
 		                <li><a href="inbox"><i class="fa fa-envelope"></i>Inbox</a></li>
