@@ -20,10 +20,31 @@ disp_process_pref = "===[Process]===: "
 def index():
     return render_template('index.html')
 
+# Render home page
+@application.route('/index')
+def index_():
+    return render_template('index.html')
+
 
 @application.route('/signin')
 def signin():
+
     return render_template('signin.html')
+
+
+@application.route('/signin', methods = ['POST'])
+def getSignin():
+    print request.form.get('user-mail')
+    print request.form.get('user-password')
+
+
+
+    return render_template('index.html')
+
+
+@application.route('/signup')
+def signup():
+    return render_template('signup.html')
 
 # Main function
 if __name__ == '__main__':
