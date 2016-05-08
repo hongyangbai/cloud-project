@@ -74,6 +74,11 @@ def profile():
     return render_template('profile.html')
 
 
+@application.route('/profile-edit')
+def profile():
+
+    return render_template('profile-edit.html')
+
 
 @application.route('/signup')
 def signup():
