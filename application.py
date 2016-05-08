@@ -64,7 +64,7 @@ def signin():
         else:
             session['username'] = username
             flash('You are now logged in as <b>{}</b>.'.format(username))'''
-            return redirect(url_for('index'))
+        return redirect(url_for('index'))
 
     return render_template('signin.html')
 
