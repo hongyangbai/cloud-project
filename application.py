@@ -1,6 +1,6 @@
 from gevent import monkey
 import time
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, g, session, redirect, flash, url_for
 from flask_socketio import SocketIO, emit, join_room, leave_room, \
     close_room, rooms, disconnect
 import json 
@@ -29,7 +29,6 @@ def before_request():
     try:
         g.conn = engine.connect()
     except:
-        traceback.print_exc()
         g.conn = None
 
 
@@ -52,16 +51,14 @@ def index_():
 
 @application.route('/signin', methods = ['GET', 'POST'])
 def signin():
-
-
     error = None
     if request.method == 'POST':
         print request.form.get('user-mail')
         print request.form.get('user-password')
         username = request.form.get('user-mail')
         password = request.form.get('user-password')
-        '''cur = g.conn.execute('''SELECT * FROM users WHERE username = %s AND password = %s''', (username, password))
-        user = cur.fetchone()
+        #cur = g.conn.execute('''SELECT * FROM users WHERE username = %s AND password = %s''', (username, password))
+        '''user = cur.fetchone()
         if user is None:
             error = 'Invalid username or password.'
         else:
@@ -76,27 +73,6 @@ def profile():
 
     return render_template('profile.html')
 
-'''@application.route('/signin', methods = ['GET', 'POST'])
-def getSignin():
-    print request.form.get('user-mail')
-    print request.form.get('user-password')
-
-
-    error = None
-    if request.method == 'POST':
-        username = request.form.get('user-mail')
-        password = request.form.get('user-password')
-        cur = g.conn.execute('''SELECT * FROM users WHERE username = %s AND password = %s''', (username, password))
-        user = cur.fetchone()
-        if user is None:
-            error = 'Invalid username or password.'
-        else:
-            session['username'] = username
-            flash('You are now logged in as <b>{}</b>.'.format(username))
-            return redirect(url_for('home'))
-
-
-    return render_template('index.html')'''
 
 
 @application.route('/signup')
