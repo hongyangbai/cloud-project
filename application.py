@@ -1,4 +1,4 @@
-from gevent import monkey
+#from gevent import monkey
 import time
 from flask import Flask, render_template, request, g, session, redirect, flash, url_for
 from flask_socketio import SocketIO, emit, join_room, leave_room, \
@@ -8,7 +8,7 @@ import requests
 from elasticsearch import Elasticsearch
 import sqlalchemy
 
-monkey.patch_all()
+#monkey.patch_all()
 application = Flask(__name__)
 application.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(application, async_mode='gevent')
