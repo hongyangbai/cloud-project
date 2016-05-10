@@ -48,11 +48,10 @@ def index():
     global page_user
 
     if page_user == '':
-        print "here"
 
         return redirect(url_for('signin'))
 
-    return render_template('index.html', this_username = page_user)
+    return render_template('index.html', this_username = page_user, show_what = "Top Picks")
 
 # Render home page
 @application.route('/index')
@@ -61,7 +60,7 @@ def index_():
     global page_user
     if page_user == '':
         return redirect(url_for('signin'))
-    return render_template('index.html', this_username = page_user)
+    return render_template('index.html', this_username = page_user, show_what = "Top Picks")
 
 
 @application.route('/signin', methods = ['GET', 'POST'])
@@ -70,8 +69,6 @@ def signin():
     global page_user
 
     if request.method == 'POST':
-        print request.form.get('user-username')
-        print request.form.get('user-password')
         username = request.form.get('user-username')
         password = request.form.get('user-password')
         cur = g.conn.execute('''SELECT * FROM users WHERE username = %s AND password = %s''', (username, password))
@@ -83,7 +80,7 @@ def signin():
             session['username'] = username
             page_user = username
         
-        return render_template('index.html', this_username = page_user)
+        return render_template('index.html', this_username = page_user, show_what = "Top Picks")
 
     return render_template('signin.html')
 
@@ -97,8 +94,6 @@ def signup():
     global page_user
 
     if request.method == 'POST':
-        print request.form.get('user-username')
-        print request.form.get('user-password')
         username = request.form.get('user-username')
         password = request.form.get('user-password')
         page_user = username
@@ -110,11 +105,40 @@ def signup():
 
 
 
-        return render_template('index.html', this_username = page_user)
+        return render_template('index.html', this_username = page_user, show_what = "Top Picks")
 
 
 
     return render_template('signup.html')
+
+@application.route('/show_movie')
+def show_movie():
+    movie_genre = request.args.get('genre')
+
+    if movie_genre == 'action':
+        show = "Action Movies"
+    elif movie_genre == 'romance':
+        show = "Romance Movies"
+    elif movie_genre == 'documentary':
+        show = "Documentary Movies"
+    elif movie_genre == 'comedy':
+        show = "Comedy Movies"
+    elif movie_genre == 'drama':
+        show = "Drama Movies"
+    elif movie_genre == 'thriller':
+        show = "Thriller Movies"
+    else:
+        show = "Movies"
+
+    return render_template('index.html', this_username = page_user, show_what = show)
+
+
+
+@application.route('/logout')
+def logout():
+    page_user = ''
+    return redirect(url_for('signin'))
+
 
 
 @application.route('/profile')
