@@ -120,6 +120,10 @@ http://vladimirkudinov.com
 	margin-bottom:1em;
 }
 
+.btn-warning {
+	background: #D95459;
+}
+
 /*--media Quries for 1024px-laptops-*/
 @media(max-width: 1024px) {
 .graph-container {

@@ -151,6 +151,11 @@ def profile():
 
     return render_template('profile.html', this_username = page_user)
 
+@application.route('/inbox')
+def inbox():
+
+    return render_template('movie_page.html', this_username = page_user)
+
 
 @application.route('/profile-edit')
 def profile_edit():

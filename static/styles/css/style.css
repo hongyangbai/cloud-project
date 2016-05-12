@@ -9,6 +9,7 @@ h1, h2, h3 {margin: 0;}
 ul, ol {margin: 0;padding: 0;}
 p {margin: 0;}
 
+
 html, body{
   	font-family:'Montserrat-Regular';
     font-size: 100%;
@@ -575,6 +576,10 @@ i.fa.fa-globe {
 .content-top-1:last-child {
    	margin-bottom: 0em; 
 }
+.content-movie-pic{
+   height: 100px;
+}
+
 .content-graph {
     background-color: #fff;
     border: 1px solid #ebeff6;
@@ -634,6 +639,12 @@ i.fa.fa-globe {
 }
 .content-top {
     padding: 1em 0;
+}
+
+.content-img {
+  color: #000000;
+  height: 400px;
+  width: 100%;
 }
 
 /*--pie-chart---*/
