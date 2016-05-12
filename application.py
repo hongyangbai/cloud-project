@@ -114,12 +114,15 @@ def signup():
 @application.route('/show_movie')
 def show_movie():
     movie_genre = request.args.get('genre')
+    genre=[];
 
     if movie_genre == 'action':
-
-        # Codes here
-        ###########################
-
+        genre='%'+'Adventure'+'%'
+        cur = g.conn.execute('SELECT * FROM movies WHERE genre like %s LIMIT 2',genre)
+        # cur = engine.connect().execute('SELECT * FROM movies WHERE genre like %s LIMIT 2',genre)
+        print 'hey'
+        test=get_movie(cur)
+        print test
 
         show = "Action Movies"
     elif movie_genre == 'romance':
@@ -162,7 +165,33 @@ def profile_edit():
 
     return render_template('profile-edit.html', this_username = page_user)
 
-
+def get_movie(cur):
+    movie_info = {row[0]: (row[1], row[2],row[3],row[4],row[5],row[6],row[7],row[8],row[9],row[10],row[11],row[12],row[13],row[14],row[15],row[16],row[17],row[18],row[19]) for row in cur}
+    return movie_info
+    # movielist=[int(row[0]) for row in cur]
+    # movies = []
+    # for movie_id in movielist:
+    #     movies.append({'movie_id': movie_id,
+    #                    'imdb_id': movie_info[movie_id][0],
+    #                    'tmdb_id': movie_info[movie_id][1],
+    #                    'title': movie_info[movie_id][2],
+    #                    'year': movie_info[movie_id][3],
+    #                    'plot': movie_info[movie_id][4],
+    #                    'rated': movie_info[movie_id][5],
+    #                    'released': movie_info[movie_id][6],
+    #                    'runtime': movie_info[movie_id][7],
+    #                    'genre': movie_info[movie_id][8],
+    #                    'director': movie_info[movie_id][9],
+    #                    'writer': movie_info[movie_id][10],
+    #                    'actors': movie_info[movie_id][11],
+    #                    'language': movie_info[movie_id][12],
+    #                    'country': movie_info[movie_id][13],
+    #                    'awards': movie_info[movie_id][14],
+    #                    'poster': movie_info[movie_id][15],
+    #                    'metascore': movie_info[movie_id][16],
+    #                    'imdbrating': movie_info[movie_id][17],
+    #                    'imdbvotes': movie_info[movie_id][18]})
+    # return movie_info
 # Main function
 if __name__ == '__main__':
     socketio.run(application, debug=True)
