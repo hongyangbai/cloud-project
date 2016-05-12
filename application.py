@@ -117,12 +117,12 @@ def show_movie():
     genre=[];
 
     if movie_genre == 'action':
-        genre='%'+'Adventure'+'%'
-        cur = g.conn.execute('SELECT * FROM movies WHERE genre like %s LIMIT 2',genre)
-        # cur = engine.connect().execute('SELECT * FROM movies WHERE genre like %s LIMIT 2',genre)
-        print 'hey'
-        test=get_movie(cur)
-        print test
+        genre='%'+'Action'+'%'
+        cur = g.conn.execute('SELECT * FROM movies WHERE genre like %s ORDER BY movie_id ASC LIMIT 20',genre)
+        # cur = engine.connect().execute('SELECT * FROM movies WHERE genre like %s ORDER BY movie_id ASC LIMIT 10',genre)
+        # print 'hey'
+        movies=get_movie(cur)
+        print movies
 
         show = "Action Movies"
     elif movie_genre == 'romance':
@@ -166,32 +166,31 @@ def profile_edit():
     return render_template('profile-edit.html', this_username = page_user)
 
 def get_movie(cur):
-    movie_info = {row[0]: (row[1], row[2],row[3],row[4],row[5],row[6],row[7],row[8],row[9],row[10],row[11],row[12],row[13],row[14],row[15],row[16],row[17],row[18],row[19]) for row in cur}
-    return movie_info
-    # movielist=[int(row[0]) for row in cur]
-    # movies = []
-    # for movie_id in movielist:
-    #     movies.append({'movie_id': movie_id,
-    #                    'imdb_id': movie_info[movie_id][0],
-    #                    'tmdb_id': movie_info[movie_id][1],
-    #                    'title': movie_info[movie_id][2],
-    #                    'year': movie_info[movie_id][3],
-    #                    'plot': movie_info[movie_id][4],
-    #                    'rated': movie_info[movie_id][5],
-    #                    'released': movie_info[movie_id][6],
-    #                    'runtime': movie_info[movie_id][7],
-    #                    'genre': movie_info[movie_id][8],
-    #                    'director': movie_info[movie_id][9],
-    #                    'writer': movie_info[movie_id][10],
-    #                    'actors': movie_info[movie_id][11],
-    #                    'language': movie_info[movie_id][12],
-    #                    'country': movie_info[movie_id][13],
-    #                    'awards': movie_info[movie_id][14],
-    #                    'poster': movie_info[movie_id][15],
-    #                    'metascore': movie_info[movie_id][16],
-    #                    'imdbrating': movie_info[movie_id][17],
-    #                    'imdbvotes': movie_info[movie_id][18]})
-    # return movie_info
+    movie_info = {row[0]: (row[1], row[2],row[3],row[4],row[5],row[6],row[7],row[8],row[9],row[10],row[11],row[12],row[13],row[14],row[15],row[16],row[17],row[18],row[19],row[20]) for row in cur}
+    movies = []
+    for key in movie_info:
+        movies.append({'movie_id': key,
+                       'imdb_id': movie_info[key][0],
+                       'tmdb_id': movie_info[key][1],
+                       'title': movie_info[key][2],
+                       'year': movie_info[key][3],
+                       'plot': movie_info[key][4],
+                       'rated': movie_info[key][5],
+                       'released': movie_info[key][6],
+                       'runtime': movie_info[key][7],
+                       'genre': movie_info[key][8],
+                       'director': movie_info[key][9],
+                       'writer': movie_info[key][10],
+                       'actors': movie_info[key][11],
+                       'language': movie_info[key][12],
+                       'country': movie_info[key][13],
+                       'awards': movie_info[key][14],
+                       'poster': movie_info[key][15],
+                       'metascore': movie_info[key][16],
+                       'imdbrating': movie_info[key][17],
+                       'imdbvotes': movie_info[key][18],
+                       'type': movie_info[key][19]})
+    return movies
 # Main function
 if __name__ == '__main__':
     socketio.run(application, debug=True)
