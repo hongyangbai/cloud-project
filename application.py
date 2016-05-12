@@ -120,37 +120,49 @@ def show_movie():
 
         genre='%'+'Action'+'%'
         cur = g.conn.execute('SELECT * FROM movies WHERE genre like %s ORDER BY movie_id ASC LIMIT 20',genre)
-        # cur = engine.connect().execute('SELECT * FROM movies WHERE genre like %s ORDER BY movie_id ASC LIMIT 10',genre)
-        # print 'hey'
-        movies=get_movie(cur)
-        print movies
-#        genre='%'+'Adventure'+'%'
-#        cur = g.conn.execute('SELECT * FROM movies WHERE genre like %s LIMIT 2',genre)
-#        movie_dict = get_movie(cur)
-#
-#        for each_key in movie_dict.keys():
-#            this_movie = []
-#            for each in movie_dict[each_key]:
-#
-#                this_movie.append(each)
-#            movie_info_list.append(this_movie)
-
+        
+        movie_dict = get_movie(cur)
 
         show = "Action Movies"
     elif movie_genre == 'romance':
+        genre='%'+'Romance'+'%'
+        cur = g.conn.execute('SELECT * FROM movies WHERE genre like %s ORDER BY movie_id ASC LIMIT 20',genre)
+        
+        movie_dict = get_movie(cur)
+
         show = "Romance Movies"
+
     elif movie_genre == 'documentary':
+        genre='%'+'Documentary'+'%'
+        cur = g.conn.execute('SELECT * FROM movies WHERE genre like %s ORDER BY movie_id ASC LIMIT 20',genre)
+        
+        movie_dict = get_movie(cur)
         show = "Documentary Movies"
+
     elif movie_genre == 'comedy':
+        genre='%'+'Comedy'+'%'
+        cur = g.conn.execute('SELECT * FROM movies WHERE genre like %s ORDER BY movie_id ASC LIMIT 20',genre)
+        
+        movie_dict = get_movie(cur)
         show = "Comedy Movies"
+
     elif movie_genre == 'drama':
+        genre='%'+'Drama'+'%'
+        cur = g.conn.execute('SELECT * FROM movies WHERE genre like %s ORDER BY movie_id ASC LIMIT 20',genre)
+        
+        movie_dict = get_movie(cur)
         show = "Drama Movies"
     elif movie_genre == 'thriller':
+        genre='%'+'Thriller'+'%'
+        cur = g.conn.execute('SELECT * FROM movies WHERE genre like %s ORDER BY movie_id ASC LIMIT 20',genre)
+        
+        movie_dict = get_movie(cur)
         show = "Thriller Movies"
+
     else:
         show = "Movies"
 
-    return render_template('index.html', this_username = page_user, show_what = show, movie_info_list = movie_info_list)
+    return render_template('index.html', this_username = page_user, show_what = show, movie_info_list = movie_dict)
 
 
 
@@ -166,10 +178,16 @@ def profile():
 
     return render_template('profile.html', this_username = page_user)
 
-@application.route('/inbox')
+@application.route('/movie')
 def inbox():
 
-    return render_template('movie_page.html', this_username = page_user)
+    movie_id = request.args.get('movie_id')
+    cur = g.conn.execute('SELECT * FROM movies WHERE movie_id=%s',movie_id)
+        
+    movie_dict = get_movie(cur)[0]
+
+
+    return render_template('movie_page.html', this_username = page_user, this_movie = movie_dict)
 
 
 @application.route('/profile-edit')

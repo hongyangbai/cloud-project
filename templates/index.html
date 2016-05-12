@@ -193,40 +193,44 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 					<!-- start content_slider -->
 
 		<div id="owl-demo" class="owl-carousel text-center movie-gallery">
-			<div  class="item">
-				<a href="http://vimeo.com/23924346">
-				<img class="lazyOwl img-responsive" data-src="../static/styles/images/captain-america.jpg" alt="name">
-				<p id='pic-caption'>CAPTION</p>
-				</a>
-			</div>
-			<div  class="item">
-				<a href="http://vimeo.com/23924346">
-				<img class="lazyOwl img-responsive" data-src="../static/styles/images/deadpool.jpg" alt="name">
-				</a>
-			</div>
-			<div  class="item">
-				<a href="http://vimeo.com/23924346">
-				<img class="lazyOwl img-responsive" data-src="../static/styles/images/harry-potter.jpg" alt="name">
-				</a>
-			</div>
 			
 		</div>
 
 		<script>
 			var show_title = '{{show_what}}';
+
 			movie_for = document.getElementById("movie-for");
 			movie_for.innerHTML = show_title;
 
+
+			var movie_info = {{movie_info_list|tojson}};
+
 			this_container = document.getElementById("owl-demo");
 
-			this_movie = document.createElement("DIV");
-			this_movie.className = "item";
-			this_pic = document.createElement("IMG");
-			this_pic.className = "lazyOwl img-responsive"
-			this_pic.setAttribute("data-src", "../static/styles/images/captain-america.jpg");
-			this_pic.setAttribute("alt", "name");
-			this_movie.appendChild(this_pic);
-			this_container.appendChild(this_movie);
+			for (var i = 0; i < movie_info.length; i++) {
+				
+
+
+
+				this_movie = document.createElement("DIV");
+				this_movie.className = "item";
+				this_movie_link = document.createElement("A");
+				this_movie_link.setAttribute("href", "movie?movie_id=".concat(movie_info[i]['movie_id']));
+
+				this_movie_cap = document.createElement("P");
+				this_movie_cap.innerHTML = movie_info[i]['title'];
+
+				this_pic = document.createElement("IMG");
+				this_pic.className = "lazyOwl img-responsive"
+				this_pic.setAttribute("data-src", movie_info[i]['poster']);
+
+				this_movie.appendChild(this_movie_link);
+				this_movie_link.appendChild(this_pic);
+				this_movie_link.appendChild(this_movie_cap);
+				this_container.appendChild(this_movie);
+			}
+
+			
 
 
 		</script>

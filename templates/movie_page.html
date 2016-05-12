@@ -197,9 +197,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 				<!--graph-->
 				<link rel="stylesheet" href="../static/styles/css/graph.css">
 							
-				<div class="graph-container">
-					<img src="../static/styles/images/harry-potter.jpg" class="img-responsive" alt="Cinque Terre" width="300" height="600">
-					
+				<div class="graph-container" id="movie-poster-container">
+
 				</div>
 	
 				</div>
@@ -215,9 +214,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
 						<button type="submit" class="btn btn-warning" id="btn1" onclick="clickRate(1)">1</button>
     					<button type="submit" class="btn btn-warning" id="btn2" onclick="clickRate(2)">2</button>
-    					<button type="submit" class="btn btn-warning" id="btn3" onclick="clickRate(2)">3</button>
-    					<button type="submit" class="btn btn-warning" id="btn4" onclick="clickRate(2)">4</button>
-    					<button type="submit" class="btn btn-warning" id="btn5" onclick="clickRate(2)">5</button>
+    					<button type="submit" class="btn btn-warning" id="btn3" onclick="clickRate(3)">3</button>
+    					<button type="submit" class="btn btn-warning" id="btn4" onclick="clickRate(4)">4</button>
+    					<button type="submit" class="btn btn-warning" id="btn5" onclick="clickRate(5)">5</button>
 
 
     					<form role="form">
@@ -230,18 +229,23 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 							function clickRate(rate) {
 
 								var btn = document.getElementsByClassName('btn btn-warning');
-								
+								for (var i = 0; i < btn.length; i++) {
+									btn[i].style.backgroundColor = "#D95459";
+								}
+								btn[rate-1].style.backgroundColor = "#b30000";
 
-
-						        if (count == 0) {
-						            property.style.backgroundColor = "#b30000"
-						            count = 1;        
-						        }
-						        else {
-						            property.style.backgroundColor = "#D95459"
-						            count = 0;
-						        }
 							}
+
+							var movie_info = {{this_movie|tojson}};
+							movie_poster_container = document.getElementById("movie-poster-container");
+							movie_poster = document.createElement("IMG");
+
+							movie_poster.setAttribute("src", movie_info["poster"]);
+							movie_poster.setAttribute("width", "260");
+							movie_poster.setAttribute("height", "400");
+							movie_poster_container.appendChild(movie_poster);
+							
+
 						</script>
 				</div>
 	
