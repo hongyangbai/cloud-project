@@ -116,6 +116,11 @@ def show_movie():
     movie_genre = request.args.get('genre')
 
     if movie_genre == 'action':
+
+        # Codes here
+        ###########################
+
+
         show = "Action Movies"
     elif movie_genre == 'romance':
         show = "Romance Movies"
@@ -144,13 +149,13 @@ def logout():
 @application.route('/profile')
 def profile():
 
-    return render_template('profile.html')
+    return render_template('profile.html', this_username = page_user)
 
 
 @application.route('/profile-edit')
 def profile_edit():
 
-    return render_template('profile-edit.html')
+    return render_template('profile-edit.html', this_username = page_user)
 
 
 # Main function

@@ -145,12 +145,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		              </ul>
 		            </li>
 					<li class="dropdown">
-		              <a href="#" class="dropdown-toggle dropdown-at" data-toggle="dropdown"><span class=" name-caret">Rackham<i class="caret"></i></span><img src="images/wo.jpg"></a>
+		              <a href="#" class="dropdown-toggle dropdown-at" data-toggle="dropdown"><span class=" name-caret">{{this_username}}<i class="caret"></i></span><img src="../static/styles/images/avt-cat.png" height="55" width="55"></a>
 		              <ul class="dropdown-menu " role="menu">
-		                <li><a href="profile.html"><i class="fa fa-user"></i>Edit Profile</a></li>
-		                <li><a href="inbox.html"><i class="fa fa-envelope"></i>Inbox</a></li>
-		                <li><a href="calendar.html"><i class="fa fa-calendar"></i>Calender</a></li>
-		                <li><a href="inbox.html"><i class="fa fa-clipboard"></i>Tasks</a></li>
+		                <li><a href="profile"><i class="fa fa-user"></i>Edit Profile</a></li>
+		                <li><a href="inbox"><i class="fa fa-envelope"></i>Inbox</a></li>
+		                <li><a href="logout"><i class="fa fa-sign-out"></i>Log Out</a></li>
 		              </ul>
 		            </li>
 		           
@@ -172,13 +171,12 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     <li>
                         <a href="#" class=" hvr-bounce-to-right"><i class="fa fa-film nav_icon"></i> <span class="nav-label">Movies</span><span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
-                            <li><a href="graphs.html" class=" hvr-bounce-to-right"> <i class="fa fa-fighter-jet nav_icon"></i>Action</a></li>
-                            <li><a href="maps.html" class=" hvr-bounce-to-right"><i class="fa fa-map-marker nav_icon"></i>Documentary</a></li>
-						<li><a href="typography.html" class=" hvr-bounce-to-right"><i class="fa fa-file-text-o nav_icon"></i>Romance</a></li>
-						<li><a href="typography.html" class=" hvr-bounce-to-right"><i class="fa fa-file-text-o nav_icon"></i>Comedy</a></li>
-						<li><a href="typography.html" class=" hvr-bounce-to-right"><i class="fa fa-file-text-o nav_icon"></i>Drama</a></li>
-						<li><a href="typography.html" class=" hvr-bounce-to-right"><i class="fa fa-file-text-o nav_icon"></i>Thriller</a></li>
-
+                            <li><a href="show_movie?genre=action" class=" hvr-bounce-to-right"> <i class="fa fa-fighter-jet nav_icon"></i>Action</a></li>
+						<li><a href="show_movie?genre=romance" class=" hvr-bounce-to-right"><i class="fa fa-heart nav_icon"></i>Romance</a></li>
+						<li><a href="show_movie?genre=comedy" class=" hvr-bounce-to-right"><i class="fa fa-smile-o nav_icon"></i>Comedy</a></li>
+						<li><a href="show_movie?genre=drama" class=" hvr-bounce-to-right"><i class="fa fa-video-camera nav_icon"></i>Drama</a></li>
+                            <li><a href="show_movie?genre=documentary" class=" hvr-bounce-to-right"><i class="fa fa-book nav_icon"></i>Documentary</a></li>
+						<li><a href="show_movie?genre=thriller" class=" hvr-bounce-to-right"><i class="fa fa-certificate nav_icon"></i>Thriller</a></li>
 					   </ul>
                     </li>
 					 <li>
@@ -196,8 +194,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     <li>
                         <a href="#" class=" hvr-bounce-to-right"><i class="fa fa-cog nav_icon"></i> <span class="nav-label">Settings</span><span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
-                            <li><a href="signin.html" class=" hvr-bounce-to-right"><i class="fa fa-sign-out nav_icon"></i>Log Out</a></li>
-                            <li><a href="signup.html" class=" hvr-bounce-to-right"><i class="fa fa-user nav_icon"></i>Edit Profile</a></li>
+                            <li><a href="signin" class=" hvr-bounce-to-right"><i class="fa fa-sign-out nav_icon"></i>Log Out</a></li>
+                            <li><a href="profile" class=" hvr-bounce-to-right"><i class="fa fa-user nav_icon"></i>Edit Profile</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -274,7 +272,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			</div>
 			<div class="profile-btn">
 
-                <button type="button" href="#" class="btn bg-red">Edit</button>
+                <button type="button" href="profile-edit" class="btn bg-red">Edit</button>
            <div class="clearfix"></div>
 			</div>
 			 
