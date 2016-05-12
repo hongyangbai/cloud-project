@@ -187,37 +187,42 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		<div class="content-mid">
 			
 			
+
 			<div class="col-md-12">
 		<div class="middle-content">
+
+
+
 		<h3 id="movie-for">Top Picks</h3>
 					<!-- start content_slider -->
-		<div id="owl-demo" class="owl-carousel text-center movie-gallery">
-			<div  class="item">
-				<a href="http://vimeo.com/23924346">
-				<img class="lazyOwl img-responsive" data-src="../static/styles/images/captain-america.jpg" alt="name">
-				<p id='pic-caption'>CAPTION</p>
-				</a>
+		<div id="owl-demo" class="owl-carousel text-center">
+			
+			<div class="item">
+				<img class="lazyOwl img-responsive" data-src="http://vignette1.wikia.nocookie.net/marvelcinematicuniverse/images/5/5c/Civil_War_Final_Poster.jpg/revision/latest?cb=20160310172110" alt="name">
 			</div>
-			<div  class="item">
-				<a href="http://vimeo.com/23924346">
-				<img class="lazyOwl img-responsive" data-src="../static/styles/images/deadpool.jpg" alt="name">
-				</a>
+
+			<div class="item">
+				<img class="lazyOwl img-responsive" data-src="http://vignette1.wikia.nocookie.net/marvelcinematicuniverse/images/5/5c/Civil_War_Final_Poster.jpg/revision/latest?cb=20160310172110" alt="name">
 			</div>
-			<div  class="item">
-				<a href="http://vimeo.com/23924346">
-				<img class="lazyOwl img-responsive" data-src="../static/styles/images/harry-potter.jpg" alt="name">
-				</a>
-			</div>
-			<div  class="item">
-				<a href="http://vimeo.com/23924346">
-				<img class="lazyOwl img-responsive" data-src="../static/styles/images/batman.jpg" alt="name">
-				</a>
+
+			<div class="item">
+				<img class="lazyOwl img-responsive" data-src="http://vignette1.wikia.nocookie.net/marvelcinematicuniverse/images/5/5c/Civil_War_Final_Poster.jpg/revision/latest?cb=20160310172110" alt="name">
 			</div>
 			
+			<div class="item">
+				<img class="lazyOwl img-responsive" data-src="http://vignette1.wikia.nocookie.net/marvelcinematicuniverse/images/5/5c/Civil_War_Final_Poster.jpg/revision/latest?cb=20160310172110" alt="name">
+			</div>
 		</div>
+
 
 		<script>
 			var show_title = '{{show_what}}';
+
+			var movie_info_list = {{movie_info_list|tojson}};
+
+			var poster = movie_info_list[1][15];
+
+
 			movie_for = document.getElementById("movie-for");
 			movie_for.innerHTML = show_title;
 
@@ -227,40 +232,31 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			this_movie.className = "item";
 			this_pic = document.createElement("IMG");
 			this_pic.className = "lazyOwl img-responsive"
-			this_pic.setAttribute("data-src", "../static/styles/images/captain-america.jpg");
+			this_pic.setAttribute("src", "http://vignette1.wikia.nocookie.net/marvelcinematicuniverse/images/5/5c/Civil_War_Final_Poster.jpg/revision/latest?cb=20160310172110");
+			//this_pic.setAttribute("src", "http://ia.media-imdb.com/images/M/MV5BMzk2OTg4MTk1NF5BMl5BanBnXkFtZTcwNjExNTgzNA@@._V1_SX300");
 			this_pic.setAttribute("alt", "name");
 			this_movie.appendChild(this_pic);
 			this_container.appendChild(this_movie);
-
+			//"../static/styles/images/captain-america.jpg"
 
 		</script>
 
-		</div>
-		<!--//sreen-gallery-cursual---->
-		<!-- requried-jsfiles-for owl -->
 		<link href="../static/styles/css/owl.carousel.css" rel="stylesheet">
 		<script src="../static/styles/js/owl.carousel.js"></script>
 			<script>
 				$(document).ready(function() {
 					$("#owl-demo").owlCarousel({
 						items : 4,
-    					loop:true,
 						lazyLoad : true,
 						autoPlay : true,
-    					autoplayTimeout:100,
-    					autoplayHoverPause:true,
 						pagination : true,
 						nav:true,
 					});
-				$('.play').on('click',function(){
-				    owl.trigger('autoplay.play.owl',[100])
-				})
-				$('.stop').on('click',function(){
-				    owl.trigger('autoplay.stop.owl')
-				})
 				});
 			</script>
-		<!-- //requried-jsfiles-for owl -->
+
+
+		</div>
 			</div>
 			<div class="clearfix"> </div>
 		</div>
