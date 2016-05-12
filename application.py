@@ -7,11 +7,20 @@ import json
 import requests
 from elasticsearch import Elasticsearch
 import sqlalchemy
+import predictionio
 
 #monkey.patch_all()
 application = Flask(__name__)
 application.config['SECRET_KEY'] = 'secret!'
-socketio = SocketIO(application, async_mode='gevent')
+eventserver_url = 'http://52.87.217.221:7070'
+access_key = 'fWPlsqEj5AOv4EQSzkCvz-yoOpjeuPnMyWimv_nZS1pT5ndWzEme8S0hspWVzfo-'
+
+pio_client = predictionio.EventClient(
+    access_key=access_key,
+    url=eventserver_url,
+    threads=5,
+    qsize=500
+)
 
 disp_process_pref = "===[Process]===: "
 
@@ -24,6 +33,7 @@ page_user = ''
 #
 #####################################
 conn_str = 'postgresql://movie:nerds@52.87.217.221:5432/movie'
+engine_url = 'https://52.87.217.221:8000/queries.json'
 
 engine = sqlalchemy.create_engine(conn_str)
 
@@ -49,7 +59,26 @@ def index():
 
     if page_user == '':
 
+
         return redirect(url_for('signin'))
+
+
+    response = requests.post(engine_url, json.dumps({'user': page_user, 'num': 20}), verify=False)
+    response = json.loads(response.text)['itemScores']
+    print len(response)
+    if len(response) == 0:
+
+        cur = g.conn.execute('''
+        SELECT *
+        FROM movies
+        WHERE random() < 0.01
+        LIMIT %s''', 20)  
+
+        movie_dict = get_movie(cur)
+
+        
+        return render_template('index.html', this_username = page_user, show_what = "Top Picks", movie_info_list = movie_dict)
+
 
     return render_template('index.html', this_username = page_user, show_what = "Top Picks", movie_info_list = '')
 
@@ -58,10 +87,32 @@ def index():
 def index_():
 
     global page_user
-    if page_user == '':
-        return redirect(url_for('signin'))
-    return render_template('index.html', this_username = page_user, show_what = "Top Picks", movie_info_list = '')
 
+    if page_user == '':
+
+
+        return redirect(url_for('signin'))
+
+
+    response = requests.post(engine_url, json.dumps({'user': page_user, 'num': 20}), verify=False)
+    response = json.loads(response.text)['itemScores']
+    print len(response)
+
+    if len(response) == 0:
+
+        cur = g.conn.execute('''
+        SELECT *
+        FROM movies
+        WHERE random() < 0.01
+        LIMIT %s''', 20)  
+
+        movie_dict = get_movie(cur)
+
+        
+        return render_template('index.html', this_username = page_user, show_what = "Top Picks", movie_info_list = movie_dict)
+
+
+    return render_template('index.html', this_username = page_user, show_what = "Top Picks", movie_info_list = '')
 
 @application.route('/signin', methods = ['GET', 'POST'])
 def signin():
@@ -77,10 +128,10 @@ def signin():
             return render_template('signin.html')
 
         else:
-            session['username'] = username
+            
             page_user = username
         
-        return render_template('index.html', this_username = page_user, show_what = "Top Picks", movie_info_list = '')
+        return redirect(url_for('index'))
 
     return render_template('signin.html')
 
@@ -119,14 +170,14 @@ def show_movie():
     if movie_genre == 'action':
 
         genre='%'+'Action'+'%'
-        cur = g.conn.execute('SELECT * FROM movies WHERE genre like %s ORDER BY movie_id ASC LIMIT 20',genre)
+        cur = g.conn.execute('SELECT * FROM movies WHERE genre like %s AND random() < 0.01 LIMIT 20',genre)
         
         movie_dict = get_movie(cur)
 
         show = "Action Movies"
     elif movie_genre == 'romance':
         genre='%'+'Romance'+'%'
-        cur = g.conn.execute('SELECT * FROM movies WHERE genre like %s ORDER BY movie_id ASC LIMIT 20',genre)
+        cur = g.conn.execute('SELECT * FROM movies WHERE genre like %s AND random() < 0.01 LIMIT 20',genre)
         
         movie_dict = get_movie(cur)
 
@@ -134,33 +185,37 @@ def show_movie():
 
     elif movie_genre == 'documentary':
         genre='%'+'Documentary'+'%'
-        cur = g.conn.execute('SELECT * FROM movies WHERE genre like %s ORDER BY movie_id ASC LIMIT 20',genre)
+        cur = g.conn.execute('SELECT * FROM movies WHERE genre like %s AND random() < 0.01 LIMIT 20',genre)
         
         movie_dict = get_movie(cur)
         show = "Documentary Movies"
 
     elif movie_genre == 'comedy':
         genre='%'+'Comedy'+'%'
-        cur = g.conn.execute('SELECT * FROM movies WHERE genre like %s ORDER BY movie_id ASC LIMIT 20',genre)
+        cur = g.conn.execute('SELECT * FROM movies WHERE genre like %s AND random() < 0.01 LIMIT 20',genre)
         
         movie_dict = get_movie(cur)
         show = "Comedy Movies"
 
     elif movie_genre == 'drama':
         genre='%'+'Drama'+'%'
-        cur = g.conn.execute('SELECT * FROM movies WHERE genre like %s ORDER BY movie_id ASC LIMIT 20',genre)
+        cur = g.conn.execute('SELECT * FROM movies WHERE genre like %s AND random() < 0.01  LIMIT 20',genre)
         
         movie_dict = get_movie(cur)
         show = "Drama Movies"
     elif movie_genre == 'thriller':
         genre='%'+'Thriller'+'%'
-        cur = g.conn.execute('SELECT * FROM movies WHERE genre like %s ORDER BY movie_id ASC LIMIT 20',genre)
+        cur = g.conn.execute('SELECT * FROM movies WHERE genre like %s AND random() < 0.01 LIMIT 20',genre)
         
         movie_dict = get_movie(cur)
         show = "Thriller Movies"
 
     else:
-        show = "Movies"
+        genre='%'+'Thriller'+'%'
+        cur = g.conn.execute('SELECT * FROM movies AND random() < 0.01 LIMIT 20')
+        
+        movie_dict = get_movie(cur)
+        show = "Others"
 
     return render_template('index.html', this_username = page_user, show_what = show, movie_info_list = movie_dict)
 
@@ -178,10 +233,41 @@ def profile():
 
     return render_template('profile.html', this_username = page_user)
 
-@application.route('/movie')
+@application.route('/movie', methods = ["GET", "POST"])
 def inbox():
 
     movie_id = request.args.get('movie_id')
+
+    if request.method == 'POST':
+        if request.form["btn_cl"] == "comment":
+            user_comment = request.form.get('user-comment')
+        elif request.form["btn_cl"] == "1":
+            user_rate = 1
+        elif request.form["btn_cl"] == "2":
+            user_rate = 2
+        elif request.form["btn_cl"] == "3":
+            user_rate = 3
+        elif request.form["btn_cl"] == "4":
+            user_rate = 4
+        elif request.form["btn_cl"] == "5":
+            user_rate = 5
+        else:
+            pass
+
+        with g.conn.begin() as _:
+            print user_rate, movie_id, page_user
+            g.conn.execute('DELETE FROM ratings WHERE username = %s AND movie_id = %s', (page_user, movie_id))
+            g.conn.execute('INSERT INTO ratings VALUES (%s, %s, %s)', (page_user, movie_id, user_rate))
+        pio_client.create_event(
+                event="rate",
+                entity_type="user",
+                entity_id=page_user,
+                target_entity_type="item",
+                target_entity_id=str(movie_id),
+                properties={"rating": user_rate}
+            )
+
+    
     cur = g.conn.execute('SELECT * FROM movies WHERE movie_id=%s',movie_id)
         
     movie_dict = get_movie(cur)[0]
@@ -223,6 +309,6 @@ def get_movie(cur):
     return movies
 # Main function
 if __name__ == '__main__':
-    socketio.run(application, debug=True, port = 5001)
+    application.run(debug=True, port = 5001)
 
 
