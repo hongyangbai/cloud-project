@@ -51,7 +51,7 @@ def index():
 
         return redirect(url_for('signin'))
 
-    return render_template('index.html', this_username = page_user, show_what = "Top Picks")
+    return render_template('index.html', this_username = page_user, show_what = "Top Picks", movie_info_list = '')
 
 # Render home page
 @application.route('/index')
@@ -60,7 +60,7 @@ def index_():
     global page_user
     if page_user == '':
         return redirect(url_for('signin'))
-    return render_template('index.html', this_username = page_user, show_what = "Top Picks")
+    return render_template('index.html', this_username = page_user, show_what = "Top Picks", movie_info_list = '')
 
 
 @application.route('/signin', methods = ['GET', 'POST'])
@@ -80,7 +80,7 @@ def signin():
             session['username'] = username
             page_user = username
         
-        return render_template('index.html', this_username = page_user, show_what = "Top Picks")
+        return render_template('index.html', this_username = page_user, show_what = "Top Picks", movie_info_list = '')
 
     return render_template('signin.html')
 
@@ -105,7 +105,7 @@ def signup():
 
 
 
-        return render_template('index.html', this_username = page_user, show_what = "Top Picks")
+        return render_template('index.html', this_username = page_user, show_what = "Top Picks", movie_info_list = '')
 
 
 
@@ -115,14 +115,28 @@ def signup():
 def show_movie():
     movie_genre = request.args.get('genre')
     genre=[];
-
+    movie_info_list = []
     if movie_genre == 'action':
+<<<<<<< HEAD
         genre='%'+'Action'+'%'
         cur = g.conn.execute('SELECT * FROM movies WHERE genre like %s ORDER BY movie_id ASC LIMIT 20',genre)
         # cur = engine.connect().execute('SELECT * FROM movies WHERE genre like %s ORDER BY movie_id ASC LIMIT 10',genre)
         # print 'hey'
         movies=get_movie(cur)
         print movies
+=======
+#        genre='%'+'Adventure'+'%'
+#        cur = g.conn.execute('SELECT * FROM movies WHERE genre like %s LIMIT 2',genre)
+#        movie_dict = get_movie(cur)
+#
+#        for each_key in movie_dict.keys():
+#            this_movie = []
+#            for each in movie_dict[each_key]:
+#
+#                this_movie.append(each)
+#            movie_info_list.append(this_movie)
+
+>>>>>>> origin/master
 
         show = "Action Movies"
     elif movie_genre == 'romance':
@@ -138,7 +152,7 @@ def show_movie():
     else:
         show = "Movies"
 
-    return render_template('index.html', this_username = page_user, show_what = show)
+    return render_template('index.html', this_username = page_user, show_what = show, movie_info_list = movie_info_list)
 
 
 
@@ -193,4 +207,6 @@ def get_movie(cur):
     return movies
 # Main function
 if __name__ == '__main__':
-    socketio.run(application, debug=True)
+    socketio.run(application, debug=True, port = 5001)
+
+
