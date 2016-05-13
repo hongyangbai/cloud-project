@@ -24,8 +24,6 @@ pio_client = predictionio.EventClient(
 
 disp_process_pref = "===[Process]===: "
 
-page_user = ''
-
 
 #####################################
 #
@@ -55,15 +53,12 @@ def teardown_request(_):
 @application.route('/')
 def index():
 
-    global page_user
 
-    if page_user == '':
-
-
+    if 'username' not in session:
         return redirect(url_for('signin'))
 
 
-    response = requests.post(engine_url, json.dumps({'user': page_user, 'num': 20}), verify=False)
+    response = requests.post(engine_url, json.dumps({'user': session['username'], 'num': 20}), verify=False)
     response = json.loads(response.text)['itemScores']
     print len(response)
     if len(response) == 0:
@@ -77,24 +72,23 @@ def index():
         movie_dict = get_movie(cur)
 
         
-        return render_template('index.html', this_username = page_user, show_what = "Top Picks", movie_info_list = movie_dict)
+        return render_template('index.html', this_username = session['username'], show_what = "Top Picks", movie_info_list = movie_dict)
 
 
-    return render_template('index.html', this_username = page_user, show_what = "Top Picks", movie_info_list = '')
+    return render_template('index.html', this_username = session['username'], show_what = "Top Picks", movie_info_list = '')
 
 # Render home page
 @application.route('/index')
 def index_():
 
-    global page_user
 
-    if page_user == '':
+    if 'username' not in session:
 
 
         return redirect(url_for('signin'))
 
 
-    response = requests.post(engine_url, json.dumps({'user': page_user, 'num': 20}), verify=False)
+    response = requests.post(engine_url, json.dumps({'user': session['username'], 'num': 20}), verify=False)
     response = json.loads(response.text)['itemScores']
     print len(response)
 
@@ -109,15 +103,14 @@ def index_():
         movie_dict = get_movie(cur)
 
         
-        return render_template('index.html', this_username = page_user, show_what = "Top Picks", movie_info_list = movie_dict)
+        return render_template('index.html', this_username = session['username'], show_what = "Top Picks", movie_info_list = movie_dict)
 
 
-    return render_template('index.html', this_username = page_user, show_what = "Top Picks", movie_info_list = '')
+    return render_template('index.html', this_username = session['username'], show_what = "Top Picks", movie_info_list = '')
 
 @application.route('/signin', methods = ['GET', 'POST'])
 def signin():
     error = None
-    global page_user
 
     if request.method == 'POST':
         username = request.form.get('user-username')
@@ -129,7 +122,7 @@ def signin():
 
         else:
             
-            page_user = username
+            session['username'] = username
         
         return redirect(url_for('index'))
 
@@ -140,14 +133,10 @@ def signin():
 @application.route('/signup', methods = ['GET', 'POST'])
 def signup():
 
-
-    error = None
-    global page_user
-
     if request.method == 'POST':
         username = request.form.get('user-username')
         password = request.form.get('user-password')
-        page_user = username
+        session['username'] = username
         try:
             g.conn.execute('''INSERT INTO users (username, password) VALUES (%s, %s)''', (username, password))
             session['username'] = username
@@ -156,11 +145,28 @@ def signup():
 
 
 
-        return render_template('index.html', this_username = page_user, show_what = "Top Picks", movie_info_list = '')
+        return render_template('index.html', this_username = session['username'], show_what = "Top Picks", movie_info_list = '')
 
 
 
     return render_template('signup.html')
+
+
+
+@application.route('/search_movie', methods = ["POST"])
+def search_movie():
+
+    movie_name = request.form.get('search-box')
+    movie_name = '%'+movie_name+'%'
+    cur = g.conn.execute('SELECT * FROM movies WHERE title like %s LIMIT 20',movie_name)
+
+    movie_dict = get_movie(cur)
+        
+
+    return render_template('index.html', this_username = session['username'], show_what = "Search Results", movie_info_list = movie_dict)
+
+
+
 
 @application.route('/show_movie')
 def show_movie():
@@ -216,13 +222,13 @@ def show_movie():
         movie_dict = get_movie(cur)
         show = "Others"
 
-    return render_template('index.html', this_username = page_user, show_what = show, movie_info_list = movie_dict)
+    return render_template('index.html', this_username = session['username'], show_what = show, movie_info_list = movie_dict)
 
 
 
 @application.route('/logout')
 def logout():
-    page_user = ''
+    session.pop('username', None)
     return redirect(url_for('signin'))
 
 
@@ -230,7 +236,7 @@ def logout():
 @application.route('/profile')
 def profile():
 
-    return render_template('profile.html', this_username = page_user)
+    return render_template('profile.html', this_username = session['username'])
 
 @application.route('/movie', methods = ["GET", "POST"])
 def inbox():
@@ -242,29 +248,29 @@ def inbox():
         new_comment = request.form.get('user-comment')
 
         try:
-            g.conn.execute('INSERT INTO comments (username, movie_id, comments) VALUES (%s, %s, %s)', (page_user, movie_id, new_comment))
+            g.conn.execute('INSERT INTO comments (username, movie_id, comments) VALUES (%s, %s, %s)', (session['username'], movie_id, new_comment))
 
         except:
             pass
 
         if request.form["btn_cl"] == "1":
             user_rate = 1
-            send_rating(page_user, movie_id, user_rate)
+            send_rating(session['username'], movie_id, user_rate)
         elif request.form["btn_cl"] == "2":
             user_rate = 2
-            send_rating(page_user, movie_id, user_rate)
+            send_rating(session['username'], movie_id, user_rate)
         elif request.form["btn_cl"] == "3":
             user_rate = 3
-            send_rating(page_user, movie_id, user_rate)
+            send_rating(session['username'], movie_id, user_rate)
         elif request.form["btn_cl"] == "4":
             user_rate = 4
-            send_rating(page_user, movie_id, user_rate)
+            send_rating(session['username'], movie_id, user_rate)
         elif request.form["btn_cl"] == "5":
             user_rate = 5
-            send_rating(page_user, movie_id, user_rate)
+            send_rating(session['username'], movie_id, user_rate)
         else:
             user_rate = 3
-            send_rating(page_user, movie_id, user_rate)
+            send_rating(session['username'], movie_id, user_rate)
 
            
             
@@ -278,7 +284,6 @@ def inbox():
             user_comment.append([each[1], each[0]])
     except:
         pass
-    print user_comment
 
     if user_comment == "None":
         user_comment = []
@@ -286,7 +291,7 @@ def inbox():
     
     movie_dict = get_movie(cur)[0]
 
-    return render_template('movie_page.html', this_username = page_user, this_movie = movie_dict, this_movie_comment = user_comment)
+    return render_template('movie_page.html', this_username = session['username'], this_movie = movie_dict, this_movie_comment = user_comment)
 
 
 def send_rating(page_user, movie_id, user_rate):
@@ -306,7 +311,7 @@ def send_rating(page_user, movie_id, user_rate):
 @application.route('/profile-edit')
 def profile_edit():
 
-    return render_template('profile-edit.html', this_username = page_user)
+    return render_template('profile-edit.html', this_username = session['username'])
 
 def get_movie(cur):
     movie_info = {row[0]: (row[1], row[2],row[3],row[4],row[5],row[6],row[7],row[8],row[9],row[10],row[11],row[12],row[13],row[14],row[15],row[16],row[17],row[18],row[19],row[20]) for row in cur}
@@ -336,6 +341,6 @@ def get_movie(cur):
     return movies
 # Main function
 if __name__ == '__main__':
-    application.run(debug=True, port = 5000)
+    application.run(debug=True, host="0.0.0.0", port=5000)
 
 

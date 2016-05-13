@@ -68,9 +68,12 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         	  <section class="full-top">
 				<button id="toggle"><i class="fa fa-arrows-alt"></i></button>	
 			</section>
-			<form class=" navbar-left-right">
-              <input type="text"  value="Search..." onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Search...';}">
-              <input type="submit" value="" class="fa fa-search">
+
+
+
+			<form action="search_movie" name="search-box" class=" navbar-left-right" method="post" >
+              <input type="text"  value="Search Title..." name="search-box" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Search Title...';}">
+              <input type="submit" value="" name="search-box" class="fa fa-search">
             </form>
             <div class="clearfix"> </div>
            </div>
