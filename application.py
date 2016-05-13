@@ -211,8 +211,7 @@ def show_movie():
         show = "Thriller Movies"
 
     else:
-        genre='%'+'Thriller'+'%'
-        cur = g.conn.execute('SELECT * FROM movies AND random() < 0.01 LIMIT 20')
+        cur = g.conn.execute('SELECT * FROM movies WHERE random() < 0.01 LIMIT 20')
         
         movie_dict = get_movie(cur)
         show = "Others"
@@ -237,44 +236,72 @@ def profile():
 def inbox():
 
     movie_id = request.args.get('movie_id')
-
+    user_comment = []
     if request.method == 'POST':
-        if request.form["btn_cl"] == "comment":
-            user_comment = request.form.get('user-comment')
-        elif request.form["btn_cl"] == "1":
-            user_rate = 1
-        elif request.form["btn_cl"] == "2":
-            user_rate = 2
-        elif request.form["btn_cl"] == "3":
-            user_rate = 3
-        elif request.form["btn_cl"] == "4":
-            user_rate = 4
-        elif request.form["btn_cl"] == "5":
-            user_rate = 5
-        else:
+        
+        new_comment = request.form.get('user-comment')
+
+        try:
+            g.conn.execute('INSERT INTO comments (username, movie_id, comments) VALUES (%s, %s, %s)', (page_user, movie_id, new_comment))
+
+        except:
             pass
 
-        with g.conn.begin() as _:
-            print user_rate, movie_id, page_user
-            g.conn.execute('DELETE FROM ratings WHERE username = %s AND movie_id = %s', (page_user, movie_id))
-            g.conn.execute('INSERT INTO ratings VALUES (%s, %s, %s)', (page_user, movie_id, user_rate))
-        pio_client.create_event(
-                event="rate",
-                entity_type="user",
-                entity_id=page_user,
-                target_entity_type="item",
-                target_entity_id=str(movie_id),
-                properties={"rating": user_rate}
-            )
+        if request.form["btn_cl"] == "1":
+            user_rate = 1
+            send_rating(page_user, movie_id, user_rate)
+        elif request.form["btn_cl"] == "2":
+            user_rate = 2
+            send_rating(page_user, movie_id, user_rate)
+        elif request.form["btn_cl"] == "3":
+            user_rate = 3
+            send_rating(page_user, movie_id, user_rate)
+        elif request.form["btn_cl"] == "4":
+            user_rate = 4
+            send_rating(page_user, movie_id, user_rate)
+        elif request.form["btn_cl"] == "5":
+            user_rate = 5
+            send_rating(page_user, movie_id, user_rate)
+        else:
+            user_rate = 3
+            send_rating(page_user, movie_id, user_rate)
 
-    
-    cur = g.conn.execute('SELECT * FROM movies WHERE movie_id=%s',movie_id)
+           
+            
+
+
         
+    try:
+        cur = g.conn.execute('SELECT comments, username FROM comments WHERE movie_id=%s', (movie_id))
+        
+        for each in cur:
+            user_comment.append([each[1], each[0]])
+    except:
+        pass
+    print user_comment
+
+    if user_comment == "None":
+        user_comment = []
+    cur = g.conn.execute('SELECT * FROM movies WHERE movie_id=%s',movie_id)
+    
     movie_dict = get_movie(cur)[0]
 
+    return render_template('movie_page.html', this_username = page_user, this_movie = movie_dict, this_movie_comment = user_comment)
 
-    return render_template('movie_page.html', this_username = page_user, this_movie = movie_dict)
 
+def send_rating(page_user, movie_id, user_rate):
+
+    with g.conn.begin() as _:
+        g.conn.execute('DELETE FROM ratings WHERE username = %s AND movie_id = %s', (page_user, movie_id))
+        g.conn.execute('INSERT INTO ratings (username, movie_id, rating) VALUES (%s, %s, %s)', (page_user, movie_id, user_rate))
+    pio_client.create_event(
+            event="rate",
+            entity_type="user",
+            entity_id=page_user,
+            target_entity_type="item",
+            target_entity_id=str(movie_id),
+            properties={"rating": user_rate}
+        )
 
 @application.route('/profile-edit')
 def profile_edit():
@@ -309,6 +336,6 @@ def get_movie(cur):
     return movies
 # Main function
 if __name__ == '__main__':
-    application.run(debug=True, port = 5001)
+    application.run(debug=True, port = 5000)
 
 

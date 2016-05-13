@@ -84,32 +84,13 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
 						
 		           
-		    		<li class="dropdown at-drop">
-		              <a href="#" class="dropdown-toggle dropdown-at " data-toggle="dropdown"><i class="fa fa-globe"></i> <span class="number">1</span></a>
-		              <ul class="dropdown-menu menu1 " role="menu">
-		                <li><a href="#">
-		               
-		                	<div class="user-new">
-		                	<p>New user registered</p>
-		                	<span>40 seconds ago</span>
-		                	</div>
-		                	<div class="user-new-left">
-		                
-		                	<i class="fa fa-user-plus"></i>
-		                	</div>
-		                	<div class="clearfix"> </div>
-		                	</a></li>
-		               
-		                <li><a href="#" class="view">View all messages</a></li>
-		              </ul>
-		            </li>
+		    		
 					<li class="dropdown">
 						
 
 		              <a href="#" class="dropdown-toggle dropdown-at" data-toggle="dropdown"><span class="name-caret" id="username-head">{{this_username}}<i class="caret"></i></span><img src="../static/styles/images/avt-cat.png"  height="55" width="55"></a>
 		              <ul class="dropdown-menu " role="menu">
 		                <li><a href="profile"><i class="fa fa-user"></i>Edit Profile</a></li>
-		                <li><a href="inbox"><i class="fa fa-envelope"></i>Inbox</a></li>
 		                <li><a href="logout"><i class="fa fa-sign-out"></i>Log Out</a></li>
 		              </ul>
 		            </li>
@@ -138,16 +119,10 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             <li><a href="show_movie?genre=documentary" class=" hvr-bounce-to-right"><i class="fa fa-book nav_icon"></i>Documentary</a></li>
 						<li><a href="show_movie?genre=thriller" class=" hvr-bounce-to-right"><i class="fa fa-certificate nav_icon"></i>Thriller</a></li>
 
+						<li><a href="show_movie?genre=others" class=" hvr-bounce-to-right"><i class="fa fa-chevron-circle-down nav_icon"></i>Others</a></li>
 					   </ul>
                     </li>
-					 <li>
-                        <a href="inbox" class=" hvr-bounce-to-right"><i class="fa fa-inbox nav_icon"></i> <span class="nav-label">Inbox</span> </a>
-                    </li>
-                    
-                    <li>
-                        <a href="gallery.html" class=" hvr-bounce-to-right"><i class="fa fa-picture-o nav_icon"></i> <span class="nav-label">Gallery</span> </a>
-                    </li>
-                     
+					
                      
                    
                     
@@ -172,7 +147,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 				<h2>
 				<a href="index">Home</a>
 				<i class="fa fa-angle-right"></i>
-				<span>Movies</span>
+				<a id="banner-movie-genre"></a>
 				<i class="fa fa-angle-right"></i>
 				<span id="banner-movie-name"></span>
 				</h2>
@@ -208,8 +183,16 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 				<link rel="stylesheet" href="../static/styles/css/graph.css">
 							
 				<div class="graph-container">
-					<p>Name: Harry Potter</p>
-
+				<p id="movie-name"></p>
+				<p id="movie-lang"></p>
+				<p id="movie-rated"></p>
+				<p id="movie-director"></p>
+				<p id="movie-released"></p>
+				<p id="movie-actors"></p>
+				<p id="movie-year"></p>
+				<p id="movie-genre"></p>
+				<p id="movie-runtime"></p>
+				<p id="movie-sum"></p>
 					<p>Your rating: </p>
 
 						<form method="post" id="comment-form">
@@ -223,8 +206,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 							  <label for="comment">Comment:</label>
 							  <input class="form-control" rows="5" id="comment" name="user-comment" ></input>
 							</div>
-							<button type="submit" class="btn btn-primary" name="btn_cl" value="comment" style="background-color:#D95459; border-width: 0;position:absolute;top: 300px;left: 100px;">Submit</button>
 						</form>
+
+
 
 						<script>
 							function clickRate(rate) {
@@ -237,7 +221,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 								btn[rate-1].style.backgroundColor = "#b30000";
 
 							}
-							
+
 
 							var movie_info = {{this_movie|tojson}};
 							movie_poster_container = document.getElementById("movie-poster-container");
@@ -252,11 +236,86 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 							banner_movie_name.innerHTML = movie_info["title"];
 
 							var comment_form = document.getElementById("comment-form");
-							comment_form.setAttribute("action", "movie?movie_id=".concat(movie_id))
+							comment_form.setAttribute("action", "movie?movie_id=".concat(movie_info["movie_id"]));
+
+							var movie_info_container = document.getElementById('movie-name');
+							movie_info_container.innerHTML = "Name: ".concat(movie_info["title"]);
+							var movie_info_container = document.getElementById('movie-lang');
+							movie_info_container.innerHTML = "Language: ".concat(movie_info["language"]);
+							var movie_info_container = document.getElementById('movie-sum');
+							movie_info_container.innerHTML = "Summary: ".concat(movie_info["plot"]);
+							var movie_info_container = document.getElementById('movie-rated');
+							movie_info_container.innerHTML = "Rated: ".concat(movie_info["rated"]);
+							var movie_info_container = document.getElementById('movie-director');
+							movie_info_container.innerHTML = "Director: ".concat(movie_info["director"]);
+							var movie_info_container = document.getElementById('movie-released');
+							movie_info_container.innerHTML = "Release: ".concat(movie_info["released"]);
+							var movie_info_container = document.getElementById('movie-genre');
+							movie_info_container.innerHTML = "Genre: ".concat(movie_info["genre"]);
+							var movie_info_container = document.getElementById('movie-year');
+							movie_info_container.innerHTML = "Year: ".concat(movie_info["year"]);
+							var movie_info_container = document.getElementById('movie-runtime');
+							movie_info_container.innerHTML = "Runtime: ".concat(movie_info["runtime"]);
+							var movie_info_container = document.getElementById('movie-actors');
+							movie_info_container.innerHTML = "Actors/Actresses: ".concat(movie_info["actors"]);
+
+
+							var banner_movie_genre = document.getElementById('banner-movie-genre');
+
+							if (movie_info["genre"].indexOf("Action") > -1) {
+								banner_movie_genre.setAttribute("href", "show_movie?genre".concat("action"));
+								banner_movie_genre.innerHTML = "Action";
+							}
+							else if(movie_info["genre"].indexOf("Romance") > -1){
+								banner_movie_genre.setAttribute("href", "show_movie?genre".concat("romance"));
+								banner_movie_genre.innerHTML = "Romance";
+							}
+							else if(movie_info["genre"].indexOf("Thriller") > -1){
+								banner_movie_genre.setAttribute("href", "show_movie?genre".concat("thriller"));
+								banner_movie_genre.innerHTML = "Thriller";
+							}
+							else if(movie_info["genre"].indexOf("Comedy") > -1){
+								banner_movie_genre.setAttribute("href", "show_movie?genre".concat("comedy"));
+								banner_movie_genre.innerHTML = "Comedy";
+							}
+							else if(movie_info["genre"].indexOf("Documentary") > -1){
+								banner_movie_genre.setAttribute("href", "show_movie?genre".concat("documentary"));
+								banner_movie_genre.innerHTML = "Documentary";
+							}
+							else if(movie_info["genre"].indexOf("Drama") > -1){
+								banner_movie_genre.setAttribute("href", "show_movie?genre".concat("drama"));
+								banner_movie_genre.innerHTML = "Drama";
+							}
+							else{
+								banner_movie_genre.setAttribute("href", "show_movie?genre".concat("others"));
+								banner_movie_genre.innerHTML = "others";
+							}
+
+
+						</script>
 						</script>
 				</div>
-	
+
 				</div>
+				<div class="panel panel-default" id="comment-box">
+						  <div class="panel-heading">User Comments</div>
+				</div>
+
+				<script>
+					var movie_comment = {{this_movie_comment|tojson}};
+					var comment_box = document.getElementById('comment-box');
+
+					for (var i = 0; i < movie_comment.length; i++) {
+						if(movie_comment[i][1] == ''){	
+							continue
+						}
+
+						this_comment = document.createElement("DIV");
+						this_comment.className = "panel-body";
+						this_comment.innerHTML = movie_comment[i][0] + " : " + movie_comment[i][1];
+						comment_box.appendChild(this_comment);
+					}
+				</script>
 			</div>
 
 	
@@ -266,7 +325,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
 		<!---->
 		<div class="copy">
-            <p> Author: Hongyang Bai</p>
+            <p> Author: Hongyang Bai, Ling Zhong, Zitong Zhang, Qi Xin</p>
 	    </div>
 
 		</div>
