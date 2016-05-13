@@ -8,7 +8,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <!DOCTYPE HTML>
 <html>
 <head>
-<title>Minimal an Admin Panel Category Flat Bootstrap Responsive Website Template | Profile :: w3layouts</title>
+<title>Metflix | Profile</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="keywords" content="Minimal Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
@@ -126,7 +126,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         <a href="#" class=" hvr-bounce-to-right"><i class="fa fa-cog nav_icon"></i> <span class="nav-label">Settings</span><span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li><a href="signin.html" class=" hvr-bounce-to-right"><i class="fa fa-sign-out nav_icon"></i>Log Out</a></li>
-                            <li><a href="signup.html" class=" hvr-bounce-to-right"><i class="fa fa-user nav_icon"></i>Edit Profile</a></li>
+                            <li><a href="profile" class=" hvr-bounce-to-right"><i class="fa fa-user nav_icon"></i>Edit Profile</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -155,47 +155,51 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         <div class="alert alert-info alert-dismissable">
           <a class="panel-close close" data-dismiss="alert">×</a> 
           <i class="fa fa-coffee"></i>
-           Edit your profile here...
+          <!-- {%if flag%} -->
+           Edit your Profile here...
+           <!-- {%endif%} -->
+           
+
         </div>
         <h3>Personal info</h3>
         
-        <form class="form-horizontal" role="form">
+        <form class="form-horizontal" role="form" method="post">
           <div class="form-group">
             <label class="col-lg-3 control-label">Name:</label>
             <div class="col-lg-7">
-              <input class="form-control" type="text" value="First Name Last Name">
+              <input class="form-control" type="text" name="user-fullname" value="First Name Last Name">
             </div>
           </div>
           <div class="form-group">
             <label class="col-lg-3 control-label">Gender:</label>
             <div class="col-lg-7">
-              <input class="form-control" type="text" value="">
+              <input class="form-control" type="text" name="user-gender" value="">
             </div>
           </div>
           <div class="form-group">
             <label class="col-lg-3 control-label">Mobile:</label>
             <div class="col-lg-7">
-              <input class="form-control" type="text" value="XXX-XXX-XXXX">
+              <input class="form-control" type="text" name="user-mobile" value="XXX-XXX-XXXX">
             </div>
           </div>
           <div class="form-group">
             <label class="col-lg-3 control-label">Email:</label>
             <div class="col-lg-7">
-              <input class="form-control" type="text" value="">
+              <input class="form-control" type="text" name="user-email" value="">
             </div>
           </div>
           <div class="form-group">
             <label class="col-lg-3 control-label">Description:</label>
             <div class="col-lg-7">
-              <input class="form-control" type="text" value="Describe yourself...">
+              <input class="form-control" type="text" name="user-description" value="Describe yourself...">
             </div>
           </div>
           <div class="form-group">
             <label class="col-md-3 control-label"></label>
             <div class="col-md-7">
-              <input type="button" class="btn btn-primary" value="Save Changes">
+              <input type="submit" class="btn btn-primary" value="Save Changes">
               <span></span>
-              <input type="reset" class="btn btn-default" value="Cancel">
+       <!--        <input type="reset" onClick="window.location.href='localhost/profile.html'" class="btn btn-default" value="Cancel"> -->
             </div>
           </div>
         </form>

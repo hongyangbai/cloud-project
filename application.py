@@ -23,7 +23,7 @@ pio_client = predictionio.EventClient(
 )
 
 disp_process_pref = "===[Process]===: "
-
+    
 
 #####################################
 #
@@ -157,13 +157,14 @@ def signup():
 def search_movie():
 
     movie_name = request.form.get('search-box')
+    movie_name0= movie_name
     movie_name = '%'+movie_name+'%'
     cur = g.conn.execute('SELECT * FROM movies WHERE title like %s LIMIT 20',movie_name)
 
     movie_dict = get_movie(cur)
         
 
-    return render_template('index.html', this_username = session['username'], show_what = "Search Results", movie_info_list = movie_dict)
+    return render_template('index.html', this_username = session['username'], show_what = "Search Results: "+movie_name0, movie_info_list = movie_dict)
 
 
 
@@ -235,8 +236,10 @@ def logout():
 
 @application.route('/profile')
 def profile():
-
-    return render_template('profile.html', this_username = session['username'])
+    cur = g.conn.execute('SELECT fullname,gender,mobile,email, description FROM userinfo WHERE username=%s',session['username'])
+    userinfo=[row for row in cur]
+    print userinfo
+    return render_template('profile.html', this_username = session['username'],user_info_list=userinfo)
 
 @application.route('/movie', methods = ["GET", "POST"])
 def inbox():
@@ -311,10 +314,23 @@ def send_rating(page_user, movie_id, user_rate):
             properties={"rating": user_rate}
         )
 
-@application.route('/profile-edit')
+@application.route('/profile-edit',methods = ["GET", "POST"])
 def profile_edit():
+    fullname = request.form.get('user-fullname')
+    gender = request.form.get('user-gender')
+    mobile = request.form.get('user-mobile')
+    email = request.form.get('user-email')
+    description = request.form.get('user-description')
+    # username=session['username']
+    print (session['username'],fullname,gender,mobile,email, description)
+    g.conn.execute('Delete from userinfo where username=%s', session['username'])
+    g.conn.execute('INSERT INTO userinfo (username,fullname,gender,mobile,email, description) VALUES (%s,%s, %s, %s,%s,%s)', (session['username'],fullname,gender,mobile,email, description))
+    # if fullname!=[]
+    #     flag=1;
+    # flash('You profile has been updated.')
 
-    return render_template('profile-edit.html', this_username = session['username'])
+
+    return render_template('profile-edit.html', this_username = session['username'],flag=flag)
 
 def get_movie(cur):
     movie_info = {row[0]: (row[1], row[2],row[3],row[4],row[5],row[6],row[7],row[8],row[9],row[10],row[11],row[12],row[13],row[14],row[15],row[16],row[17],row[18],row[19],row[20]) for row in cur}

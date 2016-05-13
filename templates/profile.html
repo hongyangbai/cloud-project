@@ -148,57 +148,59 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
  	 <!--gallery-->
  	 <div class=" profile">
 
-		<div class="profile-bottom">
+		<div class="profile-bottom" >
 			<h3><i class="fa fa-user"></i>Profile</h3>
-			<div class="profile-bottom-top">
+			<div class="profile-bottom-top" align="center">
 			
-			<div class="col-md-9 profile-text">
-				<table>
+			<div class="col-md-9 profile-text" align="right">
+				<table align="center">
 				<tr>
 				<td>Name</td>
 				<td>:</td>
-				<td>Jack Dorsey</td>
+				<td>{{ user_info_list[0][0]}}</td>
+				<!-- <td>Jack Dorsey</td> -->
 				</tr>
 				<tr>
 				<td>Gender</td>
 				<td>:</td>
-				<td>Male</td>
+				<td>{{ user_info_list[0][1]}}</td>
 				</tr>
 				<tr>
 				<td>Mobile</td>
 				<td>:</td>
-				<td>9123847130</td>
+				<td>{{ user_info_list[0][2]}}</td>
 				</tr>
 				<tr>
 				<td>Email</td>
 				<td> :</td>
-				<td><a href="info@gmail.com">info@lorem.com</a></td>
+				<td><a href="#">{{ user_info_list[0][3]}}</a></td>
 				</tr>
 				<tr>
 				<td>Description</td>
 				<td>:</td>
-				<td> Better late than never!</td>
+				<td>{{ user_info_list[0][4]}}</td>
 				</tr>
 				</table>
+				
 			</div>
 			<div class="clearfix"></div>
 			</div>
 			<div class="profile-bottom-bottom">
-			<div class="col-md-4 profile-fo">
-				<h4>23,5k</h4>
-				<p>Followers</p>
-				<a href="#" class="pro"><i class="fa fa-plus-circle"></i>Follow</a>
-			</div>
+			<div class="col-md-4 profile-fo" >
+				<!-- <h4>23,5k</h4> -->
+				<!-- <p>Friends</p> -->
+				<!-- <a href="#" class="pro"><i class="fa fa-plus-circle"></i>Follow</a> -->
+		<!-- 	</div>
 			<div class="col-md-4 profile-fo">
 				<h4>348</h4>
-				<p>Following</p>
-				<a href="#" class="pro1"><i class="fa fa-user"></i>View Profile</a>
-			</div>
-			<div class="col-md-4 profile-fo">
+				<p>Friends</p>
+				<a href="#" class="pro1"><i class="fa fa-user"></i>Follow</a>
+			</div> -->
+			<!-- <div class="col-md-4 profile-fo">
 				<h4>23,5k</h4>
 				<p>Snippets</p>
 				<a href="#"><i class="fa fa-cog"></i>Options</a>
-			</div>
+			</div> -->
 			<div class="clearfix"></div>
 			</div>
 			<div class="profile-btn">
