@@ -247,30 +247,33 @@ def inbox():
         
         new_comment = request.form.get('user-comment')
 
-        try:
-            g.conn.execute('INSERT INTO comments (username, movie_id, comments) VALUES (%s, %s, %s)', (session['username'], movie_id, new_comment))
+        if new_comment != '':
+            try:
+                g.conn.execute('INSERT INTO comments (username, movie_id, comments) VALUES (%s, %s, %s)', (session['username'], movie_id, new_comment))
 
-        except:
-            pass
+            except:
+                pass
 
-        if request.form["btn_cl"] == "1":
-            user_rate = 1
-            send_rating(session['username'], movie_id, user_rate)
-        elif request.form["btn_cl"] == "2":
-            user_rate = 2
-            send_rating(session['username'], movie_id, user_rate)
-        elif request.form["btn_cl"] == "3":
-            user_rate = 3
-            send_rating(session['username'], movie_id, user_rate)
-        elif request.form["btn_cl"] == "4":
-            user_rate = 4
-            send_rating(session['username'], movie_id, user_rate)
-        elif request.form["btn_cl"] == "5":
-            user_rate = 5
-            send_rating(session['username'], movie_id, user_rate)
         else:
-            user_rate = 3
-            send_rating(session['username'], movie_id, user_rate)
+
+            if request.form["btn_cl"] == "1":
+                user_rate = 1
+                send_rating(session['username'], movie_id, user_rate)
+            elif request.form["btn_cl"] == "2":
+                user_rate = 2
+                send_rating(session['username'], movie_id, user_rate)
+            elif request.form["btn_cl"] == "3":
+                user_rate = 3
+                send_rating(session['username'], movie_id, user_rate)
+            elif request.form["btn_cl"] == "4":
+                user_rate = 4
+                send_rating(session['username'], movie_id, user_rate)
+            elif request.form["btn_cl"] == "5":
+                user_rate = 5
+                send_rating(session['username'], movie_id, user_rate)
+            else:
+                user_rate = 3
+                send_rating(session['username'], movie_id, user_rate)
 
            
             
