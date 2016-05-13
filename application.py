@@ -330,7 +330,7 @@ def profile_edit():
     # flash('You profile has been updated.')
 
 
-    return render_template('profile-edit.html', this_username = session['username'],flag=flag)
+    return render_template('profile-edit.html', this_username = session['username'])
 
 def get_movie(cur):
     movie_info = {row[0]: (row[1], row[2],row[3],row[4],row[5],row[6],row[7],row[8],row[9],row[10],row[11],row[12],row[13],row[14],row[15],row[16],row[17],row[18],row[19],row[20]) for row in cur}
